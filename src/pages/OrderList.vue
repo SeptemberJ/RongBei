@@ -62,12 +62,16 @@
           style="width: 100%">
           <el-table-column
             type="index"
+            width="40">
+          </el-table-column>
+          <el-table-column
+            property="wcstatusTxt"
+            label="状态"
             width="50">
           </el-table-column>
           <el-table-column
             property="FBillNo"
-            label="任务单号"
-            width="90">
+            label="任务单号">
           </el-table-column>
           <!-- <el-table-column label="操作" width="100">
             <template slot-scope="scope">
@@ -94,24 +98,40 @@
           <el-table-column
             property="wlname"
             label="产品名称"
-            show-overflow-tooltip>
+            width="80">
+            <!-- show-overflow-tooltip -->
           </el-table-column>
           <el-table-column
             property="FText"
             label="计划号"
-            width="100">
+            width="80">
           </el-table-column>
           <el-table-column
             property="FNOTE"
             label="合同号"
-            width="120">
+            width="70">
           </el-table-column>
           <el-table-column
             property="fmodel"
             label="型号"
-            width="120">
+            width="90">
           </el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column
+            property="fdate3Txt"
+            label="交货期"
+            width="90">
+          </el-table-column>
+          <el-table-column
+            property="wcgongxu"
+            label="进度"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            property="yuqidays"
+            label="延期天数"
+            width="60">
+          </el-table-column>
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -131,7 +151,7 @@
 <script>
 import Detail from '../components/Detail.vue'
 // import { mapState, mapActions } from 'vuex'
-import {dateToFormat} from '../util/utils'
+import {dateToFormat, secondToFormat} from '../util/utils'
 export default {
   name: 'OrderList',
   data () {
@@ -204,7 +224,12 @@ export default {
       ).then(res => {
         switch (res.data.code) {
           case 1:
-            this.orderList = res.data.orderlist
+            this.orderList = res.data.orderlist.map((item) => {
+              item.wcstatusTxt = item.wcstatus === 0 ? '正常订单' : (item.wcstatus === 1 ? '已经完成' : '延期')
+              item.fdate3Txt = secondToFormat(item.FDate3.time)
+              return item
+            })
+            console.log(this.orderList)
             break
           default:
             this.$message({

@@ -118,6 +118,7 @@ export default {
   }
   .MainContent{
     width: 100%;
+    min-width: 768px;
     min-height: calc(@Height - 64px);
     overflow: hidden;
   }

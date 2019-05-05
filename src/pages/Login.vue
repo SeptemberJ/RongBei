@@ -1,5 +1,6 @@
 <template>
 	<div class="wrap">
+    <h2 style="margin-bottom: 60px;font-size: 32px;color:#fff;margin-top: -50px;">南通汉特汽车零部件有限公司生产看板系统</h2>
     <div class="Login">
       <div class="MarginB_20"><h2 class="ColorWhite" style="letter-spacing: .34em;">用户登陆</h2></div>
       <el-form :model="Form" :rules="rules" ref="Form" label-width="0px" class="demo-ruleForm">
@@ -38,8 +39,8 @@ export default {
     }
     return {
       Form: {
-        accountName: 'admin', // admin
-        accountPsd: '123456' // 123456
+        accountName: '', // admin
+        accountPsd: '' // 123456
       },
       rules: {
         accountName: [

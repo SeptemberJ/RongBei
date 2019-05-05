@@ -8,19 +8,19 @@
       </el-menu-item> -->
       <div style="width: 100%;height:50px;display:flex;align-items:center;justify-content: center;">
         <!-- <img style="width:30px;height:30px;" src="../../static/images/Logo.png"> -->
-        <span slot="title" style="padding-left: 10px;font-size:22px;color:#fff;font-weight:bold;">容贝</span>
+        <span slot="title" style="padding-left: 10px;font-size:16px;color:#fff;font-weight:bold;">MES-SYSTEM</span>
       </div>
-      <el-menu-item index="1">
+      <!-- <el-menu-item index="1">
         <i class="el-icon-menu"></i>
         <span slot="title">订单列表</span>
-      </el-menu-item>
+      </el-menu-item> -->
       <el-menu-item index="2">
         <i class="el-icon-news"></i>
-        <span slot="title">库存</span>
+        <span slot="title">安全库存</span>
       </el-menu-item>
       <el-menu-item index="3">
         <i class="el-icon-tickets"></i>
-        <span slot="title">工单</span>
+        <span slot="title">生产工单</span>
       </el-menu-item>
       <!-- <el-submenu index="1">
         <template slot="title">

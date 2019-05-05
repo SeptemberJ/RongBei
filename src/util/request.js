@@ -4,7 +4,9 @@ import { Message } from 'element-ui'
 import utils from './utils.js'
 import store from '../vuex/store'
 
-let baseUrl = 'http://172.16.52.58:8081/rongbeiJK/'
+let baseUrl = 'http://127.0.0.1:8081/haianJK/'
+// let baseUrl = 'http://172.16.52.58:8081/rongbeiJK/'
+// let baseUrl = 'http://172.16.52.58:8081/haianJK/'
 // let baseUrl = 'http://2o1b417794.51mypc.cn:38362/rongbeiJK/'
 
 const CancelToken = axios.CancelToken

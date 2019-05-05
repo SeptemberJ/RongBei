@@ -60,7 +60,7 @@ body{
   border-right: 0px solid #000 !important;
 }
 .bgBlue{
-  background: #7bbfea;
+  background: #11264f;
   color: #fff;
   border: 0px !important;
 }
@@ -75,7 +75,7 @@ body{
   border: 0px !important;
 }
 .colorBlue{
-  color: #7bbfea;
+  color: #11264f;
 }
 .colorGreen{
   color: #65c294;
@@ -208,4 +208,35 @@ body{
 
 .detailDialog .el-dialog__body{
   padding: 0 5px !important;
+}
+
+/*table*/
+.el-table .red-row {
+  background: lavenderblush !important;
+  /*background: #f58f98 !important;
+  color: #fff;*/
+}
+.el-table .redDark-row {
+  background: #f58f98 !important;
+  color: #fff;
+  border: 0px !important;
+}
+
+/*fullScreen Dialog*/
+#detailDialog .el-dialog__body{
+  height: 85%;
+  /*overflow-x: scroll;
+  height: 450px;*/
+}
+.WorkOrder .el-table__body tr:hover >td{
+  background: initial !important;
+}
+.WorkOrder .el-table__body tr.current-row >td{
+  background: initial !important;
+}
+.WorkOrderDetail .el-table__body tr:hover >td{
+  background: initial !important;
+}
+.WorkOrderDetail .el-table__body tr.current-row >td{
+  background: initial !important;
 }

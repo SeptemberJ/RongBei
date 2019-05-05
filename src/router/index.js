@@ -19,7 +19,7 @@ const router = new VueRouter({
       path: '/Home',
       name: 'Home',
       component: Home,
-      meta: {requireAuth: false}
+      meta: {requireAuth: true}
     },
     // {
     //   path: '/Print',

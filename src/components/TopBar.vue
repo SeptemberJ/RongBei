@@ -10,6 +10,7 @@
         </span>
       </el-col>
       <el-col :span="pathName == 'Information' ? 24 : 20" class="TextAlignR">
+      <!-- <el-col :span="24" class="TextAlignR"> -->
         你好，{{userName}}
         <span class="CursorPointer" @click="LogOut"><i class="fa fa-sign-out" title="退出"></i></span>
       </el-col>
