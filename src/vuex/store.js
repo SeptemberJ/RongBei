@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
 import { Notification } from 'element-ui'
 
 Vue.use(Vuex)
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
 
 // const debug = process.env.NODE_ENV !== 'production'
 
@@ -16,8 +21,8 @@ const state = {
 }
 // actions dispatch触发
 const actions = {
-  unitUserInfo ({commit, state}, Info) {
-    commit('setUserInfo', Info)
+  unitUserInfo ({commit, state}, INFO) {
+    commit('setUserInfo', INFO)
   },
   changePath ({commit, state}, PATH) {
     commit('setPath', PATH)
@@ -47,9 +52,9 @@ const actions = {
 }
 
 const mutations = {
-  setUserInfo (state, Info) {
-    state.userName = Info.name
-    state.userId = Info.id
+  setUserInfo (state, INFO) {
+    state.userName = INFO.name
+    state.userId = INFO.id
   },
   setPath (state, PATH) {
     state.pathName = PATH
@@ -71,7 +76,8 @@ export default new Vuex.Store({
   },
   // getters,
   actions,
-  mutations
+  mutations,
   // strict: debug,
+  plugins: [vuexLocal.plugin]
   // plugins: debug ? [createLogger()] : []
 })

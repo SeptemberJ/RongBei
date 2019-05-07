@@ -59,6 +59,7 @@
       <el-col :span="24" class="MarginT_20">
         <el-table
           :data="orderList"
+          v-loading="listLoading"
           style="width: 100%">
           <el-table-column
             type="index"
@@ -156,6 +157,7 @@ export default {
   name: 'OrderList',
   data () {
     return {
+      listLoading: false,
       orderList: [],
       dialogTableVisible: false,
       detailInfo: {},
@@ -191,6 +193,7 @@ export default {
       this.getOrderList()
     },
     getOrderList () {
+      this.listLoading = true
       let DATA = {}
       // if (this.conditionForm.fbillno) {
       //   DATA.fbillno = this.conditionForm.fbillno
@@ -229,16 +232,19 @@ export default {
               item.fdate3Txt = secondToFormat(item.FDate3.time)
               return item
             })
-            console.log(this.orderList)
+            // console.log(this.orderList)
+            this.listLoading = false
             break
           default:
             this.$message({
               message: res.data.message + '!',
               type: 'error'
             })
+            this.listLoading = false
         }
       }).catch((error) => {
         console.log(error)
+        this.listLoading = false
       })
     },
     handleEdit (idx, row) {

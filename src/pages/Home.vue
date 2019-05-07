@@ -13,6 +13,7 @@
           <OrderList v-if="menuIdx == '1'"/>
           <Stock v-if="menuIdx == '2'"/>
           <WorkOrder v-if="menuIdx == '3'"/>
+          <Analysis v-if="menuIdx == '4'"/>
         </el-main>
         <el-footer>Copyright  2019 上海旺策尔信息科技有限公司 版权所有</el-footer>
       </el-container>
@@ -27,6 +28,7 @@ import SideBar from '../components/SideBar.vue'
 import OrderList from '../pages/OrderList.vue'
 import Stock from '../pages/Stock.vue'
 import WorkOrder from '../pages/WorkOrder.vue'
+import Analysis from '../pages/Analysis.vue'
 
 export default {
   name: 'Home',
@@ -63,7 +65,8 @@ export default {
     SideBar,
     OrderList,
     Stock,
-    WorkOrder
+    WorkOrder,
+    Analysis
   },
   methods: {
     ...mapActions([
@@ -118,7 +121,6 @@ export default {
   }
   .MainContent{
     width: 100%;
-    min-width: 768px;
     min-height: calc(@Height - 64px);
     overflow: hidden;
   }

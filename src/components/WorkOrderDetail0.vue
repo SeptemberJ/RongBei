@@ -3,9 +3,7 @@
     <el-table
       :data="Detiallist"
       height="100%"
-      :header-cell-style="{background:'#494e8f',color:'#ffffff'}"
       :row-class-name="tableRowClassName"
-      row-key="id"
       border
       style="width: 100%">
       <el-table-column
@@ -15,20 +13,17 @@
       <el-table-column
         prop="fnumber"
         label="物料代码"
-        width="180"
-        show-overflow-tooltip>
+        width="180">
       </el-table-column>
       <el-table-column
         prop="FName"
         label="物料名称"
-        width="180"
-        show-overflow-tooltip>
+        width="180">
       </el-table-column>
       <el-table-column
         prop="fmodel"
         label="规格"
-        width="180"
-        show-overflow-tooltip>
+        width="180">
       </el-table-column>
       <el-table-column
         prop="danwei"
@@ -38,37 +33,37 @@
       <el-table-column
         prop="fauxqtymust"
         label="计划投料数"
-        width="140">
+        width="110">
       </el-table-column>
       <el-table-column
         prop="FQty"
         label="可用库存"
-        width="140">
+        width="110">
       </el-table-column>
       <el-table-column
         prop="qls"
         label="缺料数量"
-        width="140">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="jsfqty"
         label="即时库存"
-        width="140">
+        width="110">
       </el-table-column>
       <el-table-column
         prop="yifenpeikucun"
         label="已分配库存"
-        width="140">
+        width="110">
       </el-table-column>
       <el-table-column
         prop="fbillno"
         label="在途订单号"
-        width="130">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="fqty"
         label="在途数量"
-        width="140">
+        width="80">
       </el-table-column>
       <el-table-column
         prop="fdateTxt"
@@ -78,8 +73,7 @@
       <el-table-column
         prop="fsupply"
         label="供应商"
-        width="180"
-        show-overflow-tooltip>
+        width="180">
       </el-table-column>
       <el-table-column
         prop="fuser"
@@ -92,6 +86,46 @@
         width="80">
       </el-table-column>
     </el-table>
+    <!-- <table border="0" id="table" style="width: 100%;" ref="print">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>物料代码</th>
+          <th>物料名称</th>
+          <th>规格</th>
+          <th>计划投料数</th>
+          <th>可用库存</th>
+          <th>缺料数量</th>
+          <th>即时库存</th>
+          <th>已分配库存</th>
+          <th>在途订单号</th>
+          <th>在途数量</th>
+          <th>交货日期</th>
+          <th>供应商</th>
+          <th>制单人</th>
+          <th>延期天数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(order, idx) in Detiallist" :key="idx" :class="[order.qls > 0 ? 'bgRed' : '']">
+          <td>{{idx + 1}}</td>
+          <td>{{order.fnumber}}</td>
+          <td>{{order.FName}}</td>
+          <td>{{order.fmodel}}</td>
+          <td>{{order.fauxqtymust}}</td>
+          <td>{{order.FQty}}</td>
+          <td>{{order.qls}}</td>
+          <td>{{order.jsfqty}}</td>
+          <td>{{order.yifenpeikucun}}</td>
+          <td>{{order.fbillno}}</td>
+          <td>{{order.fqty}}</td>
+          <td>{{order.fdateTxt}}</td>
+          <td>{{order.fsupply}}</td>
+          <td>{{order.fuser}}</td>
+          <td>{{order.yuqidays}}</td>
+        </tr>
+      </tbody>
+    </table> -->
   </div>
 </template>
 <script>
@@ -124,66 +158,6 @@ export default {
       return ''
     },
     getWorkOrderDetail () {
-      this.Detiallist = []
-      this.Http.get('sckgorderDetailList', {finterid: this.OrderId}
-      ).then(res => {
-        switch (res.data.code) {
-          case 1:
-            this.Detiallist = res.data.orderDetiallist.map((item, idx) => {
-              // 行首id
-              item.id = idx
-              if (item.orders && item.orders.length > 0 && item.qls > 0) {
-                item.children = []
-                item.orders.map((items, idxs) => {
-                  items.id = idx + '-' + idxs
-                  // 重组children与行首字段相同
-                  items.fnumber = item.fnumber && idxs === 0 ? item.fnumber : '' // 物料代码
-                  items.FName = item.FName && idxs === 0 ? item.FName : '' // 物料名称
-                  items.fmodel = item.fmodel && idxs === 0 ? item.fmodel : '' // 规格
-                  items.danwei = item.danwei && idxs === 0 ? item.danwei : '' // 单位
-                  items.FQty = (item.FQty || item.FQty === 0) && idxs === 0 ? item.FQty : '' // 库存
-                  items.fauxqtymust = (item.fauxqtymust || item.fauxqtymust === 0) && idxs === 0 ? item.fauxqtymust : '' // 计划投料数
-                  items.qls = (item.qls || item.qls === 0) && idxs === 0 ? item.qls : '' // 缺料数
-                  items.jsfqty = (item.jsfqty || item.jsfqty === 0) && idxs === 0 ? item.jsfqty : '' // 即时库存
-                  items.fdateTxt = secondToFormat(items.fdate.time)
-                  items.yifenpeikucun = (item.yifenpeikucun || item.yifenpeikucun === 0) && idxs === 0 ? item.yifenpeikucun : '' // 已分配库存
-                  // 缺料的第一行信息都补充完整
-                  if (idxs === 0) {
-                    item.fbillno = items.fbillno
-                    item.fqty = items.fqty
-                    item.fdateTxt = secondToFormat(items.fdate.time)
-                    item.fsupply = items.fsupply
-                    item.fuser = items.fuser
-                    item.yuqidays = items.yuqidays
-                  } else {
-                    // 添加children
-                    item.children.push(items)
-                  }
-                })
-                // return item
-              } else {
-                item.fbillno = ''
-                item.fqty = ''
-                item.fdateTxt = ''
-                item.fsupply = ''
-                item.fuser = ''
-                item.yuqidays = ''
-                // return item
-              }
-              return item
-            })
-            break
-          default:
-            this.$message({
-              message: res.data.message + '!',
-              type: 'error'
-            })
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    getWorkOrderDetail2 () {
       this.Detiallist = []
       this.Http.get('sckgorderDetailList', {finterid: this.OrderId}
       ).then(res => {

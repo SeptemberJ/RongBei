@@ -10,13 +10,11 @@ html body{
   border: 0;  
 }*/
 body{
-  min-width: 320px;
+  min-width: 768px;
   padding: 0 !important;
   margin-left: 0 !important;
-  width: 100%;
   font-size:12px;
   text-align:center;
-  overflow-x: hidden;
 }
 .Detail th{
   padding:1px;
@@ -106,6 +104,9 @@ body{
 }
 .MarginB_20{
   margin-bottom: 20px;
+}
+.MarginB_10{
+  margin-bottom: 10px;
 }
 .MarginTB_20{
   margin: 20px 0;
@@ -227,6 +228,9 @@ body{
   height: 85%;
   /*overflow-x: scroll;
   height: 450px;*/
+}
+#chooseProduction .el-dialog__body{
+  padding: 15px 20px;
 }
 .WorkOrder .el-table__body tr:hover >td{
   background: initial !important;

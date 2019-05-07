@@ -58,7 +58,7 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                :type="scope.row.fcolorTxt == '是' ? 'danger' : ''"
+                :type="scope.row.fshort == 0 ? 'danger' : ''"
                 @click="notice(scope.$index, scope.row)">下达</el-button>
             </template>
           </el-table-column>
@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     tableRowClassName ({row, rowIndex}) {
-      if (row.fcolor === 1) {
+      if (row.fshort === 0) {
         return 'red-row'
       }
       return ''
@@ -158,8 +158,8 @@ export default {
             this.workOrderList = res.data.orderlist.map((item) => {
               item.FCheckDateTxt = secondToFormat(item.FCheckDate.time)
               item.FPlanFinishDateTxt = secondToFormat(item.FPlanFinishDate.time)
-              item.fcolorTxt = item.fcolor === 0 ? '否' : '是'
-              item.fshortTxt = item.fshort === 0 ? '否' : '是'
+              // item.fcolorTxt = item.fcolor === 0 ? '否' : '是' // 下达
+              item.fshortTxt = item.fshort === 0 ? '否' : '是' // 缺料
               return item
             })
             this.listLoading = false
@@ -173,6 +173,7 @@ export default {
         }
       }).catch((error) => {
         console.log(error)
+        this.listLoading = false
       })
     },
     changeDate (idx, row) {

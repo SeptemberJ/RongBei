@@ -39,7 +39,7 @@ export default {
     }
     return {
       Form: {
-        accountName: '', // admin
+        accountName: '', // admin "vue-router": "^3.0.1",
         accountPsd: '' // 123456
       },
       rules: {
@@ -86,7 +86,8 @@ export default {
             let cookieStr = CryptoJS.HmacSHA256((this.Form.accountName + this.Form.accountPsd).toString(), '14a808c40bba58c2c')
             setCookie('RB_14a808c40bba58c2c', cookieStr, 6)
             let Info = res.data.memberInfo
-            this.unitUserInfo({name: Info.name, id: Info.ID})
+            this.unitUserInfo({name: Info.name, id: Info.id})
+            // this.unitUserInfo(Info.name)
             this.$router.push({name: 'Home'})
             this.toggleLoadingBt(false)
             break

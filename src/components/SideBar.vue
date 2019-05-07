@@ -22,6 +22,10 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">生产工单</span>
       </el-menu-item>
+      <el-menu-item index="4">
+        <i class="el-icon-share"></i>
+        <span slot="title">产品预测分析</span>
+      </el-menu-item>
       <!-- <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-third-dingdan2"></i>

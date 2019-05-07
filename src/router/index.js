@@ -13,7 +13,8 @@ const router = new VueRouter({
     {
       path: '/Login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {requireAuth: false}
     },
     {
       path: '/Home',
@@ -52,6 +53,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-  store.dispatch('changePath', to.name)
+  // store.dispatch('changePath', to.name)
 })
 export default router
