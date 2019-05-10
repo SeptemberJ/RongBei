@@ -12,13 +12,13 @@
                 <el-date-picker style="width: 100%;"
                   v-model="conditionForm.year"
                   type="year"
-                  placeholder="选择年份">
+                  placeholder="请选择">
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="1">
+            <el-col :span="5" :offset="1">
               <el-form-item label="开始月份">
-                <el-select v-model="conditionForm.begin_month" placeholder="请选择开始月份">
+                <el-select v-model="conditionForm.begin_month" placeholder="请选择">
                   <el-option
                     v-for="item in 12"
                     :key="item"
@@ -28,9 +28,9 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="6" :offset="1">
+            <el-col :span="5" :offset="1">
               <el-form-item label="结束月份">
-                <el-select v-model="conditionForm.end_month" placeholder="请选择结束月份">
+                <el-select v-model="conditionForm.end_month" placeholder="请选择">
                   <el-option
                     v-for="item in 12"
                     :key="item"
@@ -40,8 +40,25 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="4" class="TextAlignR">
+            <!-- <el-col :span="5" :offset="1">
+              <el-form-item label="短缺">
+                <el-select v-model="conditionForm.ifshort" placeholder="请选择开始月份">
+                  <el-option
+                    v-for="item in shortCondition"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col> -->
+            <!-- <el-col :span="24" class="TextAlignC">
               <el-button type="primary" @click="search">查询</el-button>
+              <el-button type="success" @click="exportExcel">导出</el-button>
+            </el-col> -->
+            <el-col :span="6" class="TextAlignR">
+              <el-button type="primary" @click="search">查询</el-button>
+              <el-button type="success" @click="exportExcel">导出</el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -49,10 +66,15 @@
       <el-col :span="24" style="width: 100%;height: 10px; border-bottom: 1px dashed #ccc;">
       </el-col>
       <el-col :span="24" class="MarginT_20">
-        <el-table
+        <el-table id="out-table"
           :data="stockList"
           v-loading="listLoading"
           style="width: 100%">
+          <!-- @selection-change="handleSelectionChange" -->
+          <!-- <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column> -->
           <el-table-column
             type="index"
             width="50">
@@ -60,15 +82,20 @@
           <el-table-column
             property="FNumber"
             label="物料代码"
-            width="120">
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             property="FName"
-            label="物料名称">
+            label="物料名称"
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             property="fmodel"
-            label="规格型号">
+            label="规格型号"
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             property="funit"
@@ -166,7 +193,7 @@
         <el-pagination
           @current-change="handleCurrentChange"
           :current-page.sync="curPage"
-          :page-size="15"
+          :page-size="10"
           layout="prev, pager, next, jumper"
           :total="sum">
         </el-pagination>
@@ -184,6 +211,21 @@ export default {
     return {
       listLoading: false,
       stockList: [],
+      ifshort: 2,
+      shortCondition: [
+        {
+          label: '全部',
+          value: 2
+        },
+        {
+          label: '是',
+          value: 1
+        },
+        {
+          label: '否',
+          value: 0
+        }
+      ],
       monthShowArray: {
         1: false,
         2: false,
@@ -203,11 +245,15 @@ export default {
       conditionForm: {
         year: '',
         begin_month: '',
-        end_month: ''
+        end_month: '',
+        ifshort: 2
       },
       propertyArray: [],
       curPage: 1,
-      sum: 0
+      sum: 0,
+      // selectedOrder: [] // 需导出的数据
+      stockListAll: [], // 导出的全部数据
+      ifCanExport: false // 全部导出数据是否加载完成
     }
   },
   computed: {
@@ -354,6 +400,10 @@ export default {
         })
         return false
       }
+      // 将之前的全部数据和可导出状态初始化
+      this.stockListAll = []
+      this.ifCanExport = false
+      // 初始化12个月份的column显示
       this.monthShowArray = {
         1: false,
         2: false,
@@ -368,6 +418,7 @@ export default {
         11: false,
         12: false
       }
+      // 拼接接口所需的条件字符串
       let monthString = ''
       let monthStringArray = ''
       let property = []
@@ -378,23 +429,26 @@ export default {
         property.push(this.conditionForm.begin_month + i)
         this.monthShowArray[this.conditionForm.begin_month + i] = true
       }
+      // 获取分页数据
       this.getStockList(monthString.substr(1), monthStringArray.substr(1), property)
+      // 获取不分页数据供导出Excel
+      this.getAllListNoPage(monthString.substr(1), monthStringArray.substr(1), property)
     },
     getStockList (Month1String, MonthString, property) {
       this.listLoading = true
       this.propertyArray = property
-      this.Http.get('monthStockList', {year: (this.conditionForm.year).getFullYear(), month: MonthString, month1: Month1String, number: 15, page_num: this.curPage}
+      this.Http.get('monthStockList', {year: (this.conditionForm.year).getFullYear(), month: MonthString, month1: Month1String, number: 10, page_num: this.curPage}
       ).then(res => {
         switch (res.data.code) {
           case 1:
             this.stockList = res.data.itemstocklist.map((item, idx) => {
               item.FName = item.month.FName
-              item.fmodel = item.month.fmodel
+              item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
               item.funit = item.month.funit
               item.fqty = item.month.fqty
               item.FSecInv = item.month.FSecInv
               item.FNumber = item.month.FNumber
-              item.duanque = item.month.fqty - item.month.FSecInv
+              item.duanque = (item.month.fqty - item.month.FSecInv) >= 0 ? 0 : (item.month.fqty - item.month.FSecInv)
               property.map((pro) => {
                 item[pro] = item[pro] ? item[pro] : ''
               })
@@ -415,8 +469,101 @@ export default {
         this.listLoading = false
       })
     },
+    getAllListNoPage (Month1String, MonthString, property) {
+      this.propertyArray = property
+      this.Http.get('daochumonthStockList', {year: (this.conditionForm.year).getFullYear(), month: MonthString, month1: Month1String}
+      ).then(res => {
+        switch (res.data.code) {
+          case 1:
+            this.stockListAll = res.data.itemstocklist.map((item, idx) => {
+              item.FName = item.month.FName
+              item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
+              item.funit = item.month.funit
+              item.fqty = item.month.fqty
+              item.FSecInv = item.month.FSecInv
+              item.FNumber = item.month.FNumber
+              item.duanque = (item.month.fqty - item.month.FSecInv) >= 0 ? 0 : (item.month.fqty - item.month.FSecInv)
+              property.map((pro) => {
+                item[pro] = item[pro] ? item[pro] : ''
+              })
+              return item
+            })
+            this.ifCanExport = true
+            break
+          default:
+            this.$message({
+              message: res.data.message + '!',
+              type: 'error'
+            })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     handleCurrentChange () {
       this.sureFilter()
+    },
+    handleSelectionChange (selection) {
+      let tempChoosed = []
+      selection.map((Order, idx) => {
+        let obj = {
+          FNumber: Order.FNumber,
+          FName: Order.FName,
+          fmodel: Order.fmodel,
+          funit: Order.funit,
+          1: Order[1],
+          2: Order[2],
+          3: Order[3],
+          4: Order[4],
+          5: Order[5],
+          6: Order[6],
+          7: Order[7],
+          8: Order[8],
+          9: Order[9],
+          10: Order[10],
+          11: Order[11],
+          12: Order[12],
+          fqty: Order.fqty,
+          FSecInv: Order.FSecInv,
+          duanque: Order.duanque
+        }
+        tempChoosed.push(obj)
+      })
+      this.selectedOrder = tempChoosed
+    },
+    // 导出
+    exportExcel () {
+      if (this.stockList.length === 0) {
+        this.$message({
+          message: '请先查询所需的数据再进行导出！',
+          type: 'warning'
+        })
+        return false
+      }
+      if (!this.ifCanExport) {
+        this.$message({
+          message: '正在加载数据请稍后再次操作！',
+          type: 'warning'
+        })
+        return false
+      }
+      require.ensure([], () => {
+        const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
+        const tHeader = ['物料代码', '物料名称', '规格型号', '单位']
+        const filterVal = ['FNumber', 'FName', 'fmodel', 'funit']
+        let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        arr.map(pro => {
+          if (this.monthShowArray[pro]) {
+            tHeader.push(pro + '月')
+            filterVal.push(pro)
+          }
+        })
+        const data = this.formatJson(filterVal.concat('fqty', 'FSecInv', 'duanque'), this.stockListAll)
+        exportJsonToExcel(tHeader.concat('现有库存', '安全库存', '短缺'), data, '安全库存new')
+      })
+    },
+    formatJson (filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }

@@ -53,7 +53,20 @@
           </el-table-column>
           <el-table-column
             property="fnumber"
-            label="产品代码">
+            label="物料代码">
+          </el-table-column>
+          <el-table-column
+            property="FName"
+            label="物料名称">
+          </el-table-column>
+          <el-table-column
+            property="FModel"
+            label="规格型号">
+          </el-table-column>
+          <el-table-column
+            property="danwei"
+            label="单位"
+            width="100">
           </el-table-column>
           <el-table-column
             property="fqty"

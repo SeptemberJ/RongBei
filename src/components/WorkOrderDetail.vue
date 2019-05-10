@@ -102,7 +102,7 @@ Vue.use(Print)
 // import { mapState, mapActions } from 'vuex'
 export default {
   name: 'WorkOrderDetail',
-  props: ['OrderId'],
+  props: ['OrderId', 'timestrap'],
   data () {
     return {
       Detiallist: []
@@ -112,7 +112,7 @@ export default {
     this.getWorkOrderDetail()
   },
   watch: {
-    OrderId: function () {
+    timestrap: function () {
       this.getWorkOrderDetail()
     }
   },

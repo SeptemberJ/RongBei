@@ -54,10 +54,11 @@
             label="是否缺料"
             width="80">
           </el-table-column>
-          <el-table-column label="操作" width="80">
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                v-if="scope.row.fshort === 0"
                 :type="scope.row.fshort == 0 ? 'danger' : ''"
                 @click="notice(scope.$index, scope.row)">下达</el-button>
             </template>
@@ -76,7 +77,7 @@
     </el-row>
     <!-- 详情 -->
     <el-dialog id="detailDialog" title="生产工单详情" :visible.sync="dialogTableVisible" fullscreen :close-on-click-modal="false">
-      <WorkOrderDetail :OrderId="OrderId"/>
+      <WorkOrderDetail :OrderId="OrderId" :timestrap="timestrap"/>
     </el-dialog>
     <!-- 修改日期 -->
     <el-dialog title="修改交期" :visible.sync="dialogDateVisible" width="450" :close-on-click-modal="false">
@@ -111,6 +112,7 @@ export default {
       listLoading: true,
       workOrderList: [],
       OrderId: null,
+      timestrap: '', // 当前时间戳
       curPage: 1,
       sum: 20,
       finterid: '', // 修改日期的finterid
@@ -127,6 +129,8 @@ export default {
   },
   computed: {
   },
+  mounted(){
+  },
   components: {
     WorkOrderDetail
   },
@@ -135,7 +139,7 @@ export default {
   },
   methods: {
     tableRowClassName ({row, rowIndex}) {
-      if (row.fshort === 0) {
+      if (row.fcolor === 1) {
         return 'red-row'
       }
       return ''
@@ -146,6 +150,7 @@ export default {
     seeDteail (row, $event) {
       // console.log(row)
       this.OrderId = row.finterid
+      this.timestrap = (new Date()).getTime()
       this.dialogTableVisible = true
     },
     getWorkOrderList () {
@@ -158,8 +163,8 @@ export default {
             this.workOrderList = res.data.orderlist.map((item) => {
               item.FCheckDateTxt = secondToFormat(item.FCheckDate.time)
               item.FPlanFinishDateTxt = secondToFormat(item.FPlanFinishDate.time)
-              // item.fcolorTxt = item.fcolor === 0 ? '否' : '是' // 下达
-              item.fshortTxt = item.fshort === 0 ? '否' : '是' // 缺料
+              // item.fcolorTxt = item.fcolor === 0 ? '否' : '是' // 颜色  1 标记颜色
+              item.fshortTxt = item.fshort === 0 ? '否' : '是' // 1  缺料
               return item
             })
             this.listLoading = false

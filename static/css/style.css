@@ -10,7 +10,7 @@ html body{
   border: 0;  
 }*/
 body{
-  min-width: 768px;
+  min-width: 1024px;
   padding: 0 !important;
   margin-left: 0 !important;
   font-size:12px;
@@ -233,14 +233,15 @@ body{
   padding: 15px 20px;
 }
 .WorkOrder .el-table__body tr:hover >td{
-  background: initial !important;
+  background: inherit !important;
 }
+
 .WorkOrder .el-table__body tr.current-row >td{
-  background: initial !important;
+  background: inherit !important;
 }
 .WorkOrderDetail .el-table__body tr:hover >td{
-  background: initial !important;
+  background: inherit !important;
 }
 .WorkOrderDetail .el-table__body tr.current-row >td{
-  background: initial !important;
+  background: inherit !important;
 }
