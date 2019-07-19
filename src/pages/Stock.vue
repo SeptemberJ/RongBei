@@ -1,24 +1,25 @@
 <template>
   <div class="Stock">
     <el-row>
-      <el-col :span="24" class="TextAlignL MarginB_20">
+      <el-col :span="24" class="TextAlignL">
         <h2 style="color: #666;">安全库存</h2>
       </el-col>
-      <el-col :span="24" class="MarginB_10">
-        <el-form ref="conditionForm" :model="conditionForm" label-position="left" label-width="80px">
+      <el-col :span="24">
+        <el-form ref="conditionForm" :model="conditionForm" label-position="left" label-width="70px">
           <el-row>
-            <el-col :span="6">
+            <el-col :span="4">
               <el-form-item label="年份">
                 <el-date-picker style="width: 100%;"
                   v-model="conditionForm.year"
+                  size="mini"
                   type="year"
                   placeholder="请选择">
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="5" :offset="1">
+            <el-col :span="4" :offset="1">
               <el-form-item label="开始月份">
-                <el-select v-model="conditionForm.begin_month" placeholder="请选择">
+                <el-select v-model="conditionForm.begin_month" placeholder="请选择" size="mini">
                   <el-option
                     v-for="item in 12"
                     :key="item"
@@ -28,9 +29,9 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="5" :offset="1">
+            <el-col :span="4" :offset="1">
               <el-form-item label="结束月份">
-                <el-select v-model="conditionForm.end_month" placeholder="请选择">
+                <el-select v-model="conditionForm.end_month" placeholder="请选择" size="mini">
                   <el-option
                     v-for="item in 12"
                     :key="item"
@@ -40,9 +41,9 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <!-- <el-col :span="5" :offset="1">
+            <el-col :span="4" :offset="1">
               <el-form-item label="短缺">
-                <el-select v-model="conditionForm.ifshort" placeholder="请选择开始月份">
+                <el-select v-model="conditionForm.fshort" placeholder="请选择" size="mini">
                   <el-option
                     v-for="item in shortCondition"
                     :key="item.value"
@@ -51,19 +52,15 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-            </el-col> -->
-            <!-- <el-col :span="24" class="TextAlignC">
-              <el-button type="primary" @click="search">查询</el-button>
-              <el-button type="success" @click="exportExcel">导出</el-button>
-            </el-col> -->
-            <el-col :span="6" class="TextAlignR">
-              <el-button type="primary" @click="search">查询</el-button>
-              <el-button type="success" @click="exportExcel">导出</el-button>
+            </el-col>
+            <el-col :span="4" class="TextAlignR" style="margin-top: 7px;">
+              <el-button size="mini" type="primary" @click="search">查询</el-button>
+              <el-button size="mini" type="success" @click="exportExcel">导出</el-button>
             </el-col>
           </el-row>
         </el-form>
       </el-col>
-      <el-col :span="24" style="width: 100%;height: 10px; border-bottom: 1px dashed #ccc;">
+      <el-col :span="24" style="width: 100%;height: 4px; border-bottom: 1px dashed #ccc;">
       </el-col>
       <el-col :span="24" class="MarginT_20">
         <el-table id="out-table"
@@ -80,19 +77,19 @@
             width="50">
           </el-table-column>
           <el-table-column
-            property="FNumber"
+            property="fnumber"
             label="物料代码"
             width="150"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            property="FName"
+            property="fname"
             label="物料名称"
             width="150"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            property="fmodel"
+            property="fmodelAfter"
             label="规格型号"
             width="150"
             show-overflow-tooltip>
@@ -106,62 +103,62 @@
           <el-table-column v-if="monthShowArray[1]"
             property="1"
             label="1月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[2]"
             property="2"
             label="2月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[3]"
             property="3"
             label="3月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[4]"
             property="4"
             label="4月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[5]"
             property="5"
             label="5月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[6]"
             property="6"
             label="6月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[7]"
             property="7"
             label="7月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[8]"
             property="8"
             label="8月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[9]"
             property="9"
             label="9月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[10]"
             property="10"
             label="10月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[11]"
             property="11"
             label="11月"
-            width="60">
+            width="130">
           </el-table-column>
           <el-table-column v-if="monthShowArray[12]"
             property="12"
             label="12月"
-            width="60">
+            width="130">
           </el-table-column>
           <!-- month -->
           <el-table-column
@@ -178,6 +175,21 @@
             property="duanque"
             label="短缺"
             width="120">
+          </el-table-column>
+          <el-table-column
+            property="zaitu"
+            label="在途数量"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            property="fbillno"
+            label="订单号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            property="FName"
+            label="供应商"
+            width="300">
           </el-table-column>
           <!-- <el-table-column label="操作" width="100">
             <template slot-scope="scope">
@@ -215,14 +227,10 @@ export default {
       shortCondition: [
         {
           label: '全部',
-          value: 2
-        },
-        {
-          label: '是',
           value: 1
         },
         {
-          label: '否',
+          label: '短缺',
           value: 0
         }
       ],
@@ -246,7 +254,7 @@ export default {
         year: '',
         begin_month: '',
         end_month: '',
-        ifshort: 2
+        fshort: 1
       },
       propertyArray: [],
       curPage: 1,
@@ -437,23 +445,60 @@ export default {
     getStockList (Month1String, MonthString, property) {
       this.listLoading = true
       this.propertyArray = property
-      this.Http.get('monthStockList', {year: (this.conditionForm.year).getFullYear(), month: MonthString, month1: Month1String, number: 10, page_num: this.curPage}
+      this.Http.get('monthStockList', {year: (this.conditionForm.year).getFullYear(), month: MonthString, month1: Month1String, number: 10, page_num: this.curPage, fshort: this.conditionForm.fshort}
       ).then(res => {
         switch (res.data.code) {
           case 1:
-            this.stockList = res.data.itemstocklist.map((item, idx) => {
-              item.FName = item.month.FName
-              item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
-              item.funit = item.month.funit
-              item.fqty = item.month.fqty
-              item.FSecInv = item.month.FSecInv
-              item.FNumber = item.month.FNumber
-              item.duanque = (item.month.fqty - item.month.FSecInv) >= 0 ? 0 : (item.month.fqty - item.month.FSecInv)
-              property.map((pro) => {
-                item[pro] = item[pro] ? item[pro] : ''
-              })
-              return item
+            res.data.itemstocklist.map((item, idx) => {
+              if (item.ztorderlist.length > 0) {
+                item.ztorderlist.map((order, idxo) => {
+                  if (idxo === 0) {
+                    order.fname = item.fname
+                    order.fnumber = item.fnumber
+                    order.funit = item.funit
+                    order.FSecInv = item.FSecInv
+                    order.fqty = item.fqty
+                    order.fmodelAfter = item.fmodel === '0' ? '' : item.fmodel
+                    order.duanque = (item.FSecInv - item.fqty) <= 0 ? 0 : (item.FSecInv - item.fqty)
+                    property.map((pro) => {
+                      order[pro] = item[pro] ? item[pro] : ''
+                    })
+                  } else {
+                    order.fname = ''
+                    order.fnumber = ''
+                    order.funit = ''
+                    order.FSecInv = ''
+                    order.fqty = ''
+                    order.fmodelAfter = ''
+                    order.duanque = ''
+                    property.map((pro) => {
+                      order[pro] = ''
+                    })
+                  }
+                  this.stockList.push(order)
+                })
+              } else {
+                item.fmodelAfter = item.fmodel === '0' ? '' : item.fmodel
+                item.duanque = (item.FSecInv - item.fqty) <= 0 ? 0 : (item.FSecInv - item.fqty)
+                property.map((pro) => {
+                  item[pro] = item[pro] ? item[pro] : ''
+                })
+                this.stockList.push(item)
+              }
             })
+            // this.stockList = res.data.itemstocklist.map((item, idx) => {
+            //   item.FName = item.month.FName
+            //   item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
+            //   item.funit = item.month.funit
+            //   item.fqty = item.month.fqty
+            //   item.FSecInv = item.month.FSecInv
+            //   item.FNumber = item.month.FNumber
+            //   item.duanque = (item.month.fqty - item.month.FSecInv) >= 0 ? 0 : (item.month.fqty - item.month.FSecInv)
+            //   property.map((pro) => {
+            //     item[pro] = item[pro] ? item[pro] : ''
+            //   })
+            //   return item
+            // })
             this.listLoading = false
             this.sum = res.data.stockCount
             break
@@ -475,20 +520,50 @@ export default {
       ).then(res => {
         switch (res.data.code) {
           case 1:
-            this.stockListAll = res.data.itemstocklist.map((item, idx) => {
-              item.FName = item.month.FName
-              item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
-              item.funit = item.month.funit
-              item.fqty = item.month.fqty
-              item.FSecInv = item.month.FSecInv
-              item.FNumber = item.month.FNumber
-              item.duanque = (item.month.fqty - item.month.FSecInv) >= 0 ? 0 : (item.month.fqty - item.month.FSecInv)
-              property.map((pro) => {
-                item[pro] = item[pro] ? item[pro] : ''
-              })
+            res.data.itemstocklist.map((item, idx) => {
+              if (item.ztorderlist.length > 0) {
+                item.ztorderlist.map((order, idxo) => {
+                  order.fname = item.fname
+                  order.fnumber = item.fnumber
+                  order.funit = item.funit
+                  order.FSecInv = item.FSecInv
+                  order.fqty = item.fqty
+                  order.fmodelAfter = item.fmodel === '0' ? '' : item.fmodel
+                  order.duanque = (item.FSecInv - item.fqty) <= 0 ? 0 : (item.FSecInv - item.fqty)
+                  property.map((pro) => {
+                    order[pro] = item[pro] ? item[pro] : ''
+                  })
+                  this.stockListAll.push(order)
+                })
+              } else {
+                item.fmodelAfter = item.fmodel === '0' ? '' : item.fmodel
+                item.duanque = (item.FSecInv - item.fqty) <= 0 ? 0 : (item.FSecInv - item.fqty)
+                // 若无供应商则默认字段为空显示
+                item.zaitu = ''
+                item.FName = ''
+                item.fbillno = ''
+                property.map((pro) => {
+                  item[pro] = item[pro] ? item[pro] : ''
+                })
+                this.stockListAll.push(item)
+              }
               return item
             })
             this.ifCanExport = true
+            // this.stockListAll = res.data.itemstocklist.map((item, idx) => {
+            //   item.FName = item.month.fname
+            //   item.fmodel = item.month.fmodel === '0' ? '' : item.month.fmodel
+            //   item.funit = item.month.funit
+            //   item.fqty = item.month.fqty
+            //   item.FSecInv = item.month.FSecInv
+            //   item.FNumber = item.month.fnumber
+            //   item.duanque = (item.month.FSecInv - item.month.fqty) <= 0 ? 0 : (item.month.FSecInv - item.month.fqty)
+            //   property.map((pro) => {
+            //     item[pro] = item[pro] ? item[pro] : ''
+            //   })
+            //   return item
+            // })
+            // this.ifCanExport = true
             break
           default:
             this.$message({
@@ -533,13 +608,13 @@ export default {
     },
     // 导出
     exportExcel () {
-      if (this.stockList.length === 0) {
-        this.$message({
-          message: '请先查询所需的数据再进行导出！',
-          type: 'warning'
-        })
-        return false
-      }
+      // if (this.stockList.length === 0) {
+      //   this.$message({
+      //     message: '请先查询所需的数据再进行导出！',
+      //     type: 'warning'
+      //   })
+      //   return false
+      // }
       if (!this.ifCanExport) {
         this.$message({
           message: '正在加载数据请稍后再次操作！',
@@ -550,7 +625,7 @@ export default {
       require.ensure([], () => {
         const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
         const tHeader = ['物料代码', '物料名称', '规格型号', '单位']
-        const filterVal = ['FNumber', 'FName', 'fmodel', 'funit']
+        const filterVal = ['fnumber', 'Fname', 'fmodel', 'funit']
         let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         arr.map(pro => {
           if (this.monthShowArray[pro]) {
@@ -558,8 +633,8 @@ export default {
             filterVal.push(pro)
           }
         })
-        const data = this.formatJson(filterVal.concat('fqty', 'FSecInv', 'duanque'), this.stockListAll)
-        exportJsonToExcel(tHeader.concat('现有库存', '安全库存', '短缺'), data, '安全库存new')
+        const data = this.formatJson(filterVal.concat('fqty', 'FSecInv', 'duanque', 'zaitu', 'fbillno', 'FName'), this.stockListAll)
+        exportJsonToExcel(tHeader.concat('现有库存', '安全库存', '短缺', '在途数量', '订单号', '供应商'), data, '安全库存')
       })
     },
     formatJson (filterVal, jsonData) {
@@ -574,7 +649,7 @@ export default {
 .Stock{
   width: calc(100% - 2*@Padding);
   background: #fff;
-  padding: @Padding;
+  padding: 0 @Padding @Padding @Padding;
   margin-top: @Padding;
 }
 </style>

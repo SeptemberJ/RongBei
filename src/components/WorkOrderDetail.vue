@@ -102,7 +102,7 @@ Vue.use(Print)
 // import { mapState, mapActions } from 'vuex'
 export default {
   name: 'WorkOrderDetail',
-  props: ['OrderId', 'timestrap'],
+  props: ['OrderId', 'timestamp'],
   data () {
     return {
       Detiallist: []
@@ -112,7 +112,7 @@ export default {
     this.getWorkOrderDetail()
   },
   watch: {
-    timestrap: function () {
+    timestamp: function () {
       this.getWorkOrderDetail()
     }
   },
@@ -133,7 +133,7 @@ export default {
               // 行首id
               item.id = idx
               if (item.orders && item.orders.length > 0 && item.qls > 0) {
-                item.children = []
+                item.children1 = []
                 item.orders.map((items, idxs) => {
                   items.id = idx + '-' + idxs
                   // 重组children与行首字段相同
@@ -147,6 +147,7 @@ export default {
                   items.jsfqty = (item.jsfqty || item.jsfqty === 0) && idxs === 0 ? item.jsfqty : '' // 即时库存
                   items.fdateTxt = secondToFormat(items.fdate.time)
                   items.yifenpeikucun = (item.yifenpeikucun || item.yifenpeikucun === 0) && idxs === 0 ? item.yifenpeikucun : '' // 已分配库存
+
                   // 缺料的第一行信息都补充完整
                   if (idxs === 0) {
                     item.fbillno = items.fbillno
@@ -157,7 +158,7 @@ export default {
                     item.yuqidays = items.yuqidays
                   } else {
                     // 添加children
-                    item.children.push(items)
+                    item.children1.push(items)
                   }
                 })
                 // return item

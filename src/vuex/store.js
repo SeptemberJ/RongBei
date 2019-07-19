@@ -17,7 +17,8 @@ const state = {
   pathName: null,
   btLoading: false,
   menuIdx: '2',
-  moduleIdx: 2
+  moduleIdx: 2,
+  imgPreUrl: 'http://ep23767307.qicp.vip:31379/upload/'
 }
 // actions dispatch触发
 const actions = {

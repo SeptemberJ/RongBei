@@ -1,11 +1,11 @@
 <template>
   <div class="Analysis">
     <el-row>
-      <el-col :span="24" class="TextAlignL MarginB_20">
+      <el-col :span="24" class="TextAlignL">
         <h2 style="color: #666;">产品预测分析</h2>
       </el-col>
       <el-col :span="24">
-        <el-form label-width="80px" class="demo-dynamic">
+        <el-form label-width="80px" class="demo-dynamic" size="mini">
           <el-form-item
             v-for="(item, index) in waitForCalculateList"
             label="成品"
@@ -14,13 +14,13 @@
           >
             <el-row>
               <el-col :span="10" class="TextAlignL">
-                <el-button type="" style="width:100%;" @click="chooseProduction">{{item.fname ? item.fname : '选择'}}</el-button>
+                <el-button size="mini" style="width:100%;" @click="chooseProduction">{{item.fname ? item.fname : '选择'}}</el-button>
               </el-col>
               <el-col :span="6" :offset="2" class="TextAlignL">
-                <el-input v-model="item.fqty" clearable placeholder="数量"></el-input>
+                <el-input v-model="item.fqty" size="mini" clearable placeholder="数量"></el-input>
               </el-col>
               <el-col :span="2" :offset="3" class="TextAlignL">
-                <el-button @click.prevent="removeDomain(item)">移除</el-button>
+                <el-button size="mini" @click.prevent="removeDomain(item)">移除</el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -28,12 +28,12 @@
             <el-button id="addLineBt" @click="addDomain" style="width: 95.8%;border: 1px dashed #84bf96;color: #84bf96;" icon="el-icon-plus">添加</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm" style="margin-left: -80px;">计算</el-button>
+            <el-button type="primary" size="mini" @click="submitForm" style="margin-left: -80px;">计算</el-button>
             <!-- <el-button @click="resetForm('waitForCalculateList')">重置</el-button> -->
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col :span="24" style="width: 100%;height: 10px; border-bottom: 1px dashed #ccc;">
+      <el-col :span="24" style="width: 100%;height: 4px; border-bottom: 1px dashed #ccc;">
       </el-col>
       <!-- <el-col :span="24" class="MarginB_10">
         <span>成品：</span>
@@ -289,7 +289,7 @@ export default {
 .Analysis{
   width: calc(100% - 2*@Padding);
   background: #fff;
-  padding: @Padding;
+  padding: 0 @Padding @Padding @Padding;
   margin-top: @Padding;
 }
 .activeRadio{

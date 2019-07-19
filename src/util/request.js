@@ -5,6 +5,7 @@ import utils from './utils.js'
 import store from '../vuex/store'
 
 let baseUrl = 'http://ep23767307.qicp.vip:31379/haianJK/'
+// let baseUrl = 'http://localhost:8080/haianJK/'
 // let baseUrl = 'http://172.16.52.58:8081/rongbeiJK/'
 // let baseUrl = 'http://172.16.52.58:8081/haianJK/'
 // let baseUrl = 'http://2o1b417794.51mypc.cn:38362/rongbeiJK/'
