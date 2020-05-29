@@ -623,7 +623,7 @@ export default {
         return false
       }
       require.ensure([], () => {
-        const { exportJsonToExcel } = require('@/vendor/Export2Excel.js')
+        const { exportJsonToExcel } = require('../vendor/Export2Excel.js')
         const tHeader = ['物料代码', '物料名称', '规格型号', '单位']
         const filterVal = ['fnumber', 'Fname', 'fmodel', 'funit']
         let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]

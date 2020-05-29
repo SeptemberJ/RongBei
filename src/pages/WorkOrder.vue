@@ -71,13 +71,19 @@
               label="是否缺料"
               width="80">
             </el-table-column>
-            <el-table-column label="操作" width="150" fixed="right">
+            <el-table-column label="操作" width="280" fixed="right">
               <template slot-scope="scope">
                 <!-- v-if="scope.row.fshort === 0" -->
                 <el-button
                   size="mini"
                   :type="scope.row.fshort === 0 ? 'danger' : ''"
-                  @click="notice(scope.$index, scope.row)">下达</el-button>
+                  :disabled="scope.row.fok == '前道'"
+                  @click="notice(scope.$index, scope.row)">前道下达</el-button>
+                <el-button
+                  size="mini"
+                  :type="scope.row.fshort === 0 ? 'danger' : ''"
+                  :disabled="scope.row.fok == ''"
+                  @click="notice(scope.$index, scope.row)">后道下达</el-button>
                 <el-button
                   size="mini"
                   :type="scope.row.yjnum === 0 ? '' : 'danger'"
@@ -229,7 +235,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.Http.post('updateXiada?finterid=' + row.finterid + '&userid=' + this.userId
+        this.Http.post('updateXiada?finterid=' + row.finterid + '&userid=' + this.userId + '&fok=' + (row.fok === '前道' ? '后道' : '前道')
         ).then(res => {
           switch (res.data.code) {
             case 1:
@@ -241,7 +247,7 @@ export default {
               break
             default:
               this.$message({
-                message: '修改失败!',
+                message: '下达失败!',
                 type: 'error'
               })
           }

@@ -3,6 +3,7 @@
     <el-table
       :data="Detiallist"
       height="100%"
+      @row-dblclick="editProcess"
       :header-cell-style="{background:'#494e8f',color:'#ffffff'}"
       :row-class-name="tableRowClassName"
       row-key="id"
@@ -11,6 +12,12 @@
       <el-table-column
         type="index"
         width="50">
+      </el-table-column>
+      <el-table-column
+        prop="FEntrySelfY0280"
+        label="前后道标志"
+        width="120"
+        show-overflow-tooltip>
       </el-table-column>
       <el-table-column
         prop="fnumber"
@@ -92,6 +99,20 @@
         width="80">
       </el-table-column>
     </el-table>
+    <el-dialog
+      title="前后道标志修改"
+      :visible.sync="dialogVisible"
+      append-to-body
+      width="300px">
+      <el-select v-model="processType">
+        <el-option key="前道" label="前道" value="前道"></el-option>
+        <el-option key="后道" label="后道" value="后道"></el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sureEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -105,6 +126,9 @@ export default {
   props: ['OrderId', 'timestamp'],
   data () {
     return {
+      dialogVisible: false,
+      processType: '',
+      fitemid: '',
       Detiallist: []
     }
   },
@@ -114,6 +138,12 @@ export default {
   watch: {
     timestamp: function () {
       this.getWorkOrderDetail()
+    },
+    dialogVisible: function (newVal) {
+      if (!newVal) {
+        this.processType = ''
+        this.fitemid = ''
+      }
     }
   },
   methods: {
@@ -122,6 +152,32 @@ export default {
         return 'redDark-row'
       }
       return ''
+    },
+    editProcess (row) {
+      this.fitemid = row.FItemID
+      this.dialogVisible = true
+    },
+    sureEdit () {
+      this.Http.post('updatefentryselfy?finterid=' + this.OrderId + '&fitemid=' + this.fitemid + '&FEntrySelfY0280=' + this.processType
+      ).then(res => {
+        switch (res.data.code) {
+          case 1:
+            this.$message({
+              message: '修改成功!',
+              type: 'success'
+            })
+            this.getWorkOrderDetail()
+            this.dialogVisible = false
+            break
+          default:
+            this.$message({
+              message: '修改失败!',
+              type: 'error'
+            })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
     },
     getWorkOrderDetail () {
       this.Detiallist = []
