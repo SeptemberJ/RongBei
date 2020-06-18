@@ -1,5 +1,5 @@
 <template>
-  <div class="WorkOrder">
+  <div class="WorkOrder"  v-loading="loadingW">
     <el-row>
       <el-col :span="24" class="TextAlignL">
         <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -144,6 +144,7 @@ export default {
   name: 'WorkOrder',
   data () {
     return {
+      loadingW: false,
       dialogTableVisible: false,
       warnVisible: false,
       dialogDateVisible: false,
@@ -169,7 +170,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userId: state => state.userId
+      userId: state => state.userId,
+      userName: state => state.userName
     })
   },
   mounted () {
@@ -230,11 +232,21 @@ export default {
       this.finterid = row.finterid
     },
     notice (idx, row) {
+      if (this.userName !== '陆莉莉' && this.userName !== '储开琴' && this.userName !== '张东琴' && this.userName !== '王璐') {
+        this.$message({
+          message: '您没有权限进行该操作!',
+          type: 'warning'
+        })
+        return false
+      }
       this.$confirm('确认下达?', '提示', {
+        showClose: false,
+        closeOnClickModal: false,
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.loadingW = true
         this.Http.post('updateXiada?finterid=' + row.finterid + '&userid=' + this.userId + '&fok=' + (row.fok === '前道' ? '后道' : '前道')
         ).then(res => {
           switch (res.data.code) {
@@ -243,6 +255,7 @@ export default {
                 message: '下达成功!',
                 type: 'success'
               })
+              this.loadingW = false
               this.getWorkOrderList()
               break
             default:
@@ -250,6 +263,7 @@ export default {
                 message: '下达失败!',
                 type: 'error'
               })
+              this.loadingW = false
           }
         }).catch((error) => {
           console.log(error)
