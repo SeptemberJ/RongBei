@@ -42,7 +42,7 @@
                   <td class="tableTd" width="19%">{{item.fpeople}}</td>
                   <td class="tableTd" width="19%">{{item.ftime}}</td> -->
                 </tr>
-                <tr>
+                <tr v-if="item.imgList.length > 0">
                   <td colspan="9">
                     <img class="MarginR_10" v-for="(img, idx) in item.imgList" :key="idx" :src="imgPreUrl + img" style="margin-top: 10px;display:block;"/>
                   </td>

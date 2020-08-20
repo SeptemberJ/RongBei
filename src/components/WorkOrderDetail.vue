@@ -68,6 +68,31 @@
         width="140">
       </el-table-column>
       <el-table-column
+        prop="fqty1"
+        label="锁定量"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="fqty2"
+        label="总锁定量"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="fqty3"
+        label="未锁现有库存"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="fqty4"
+        label="未锁替代量"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="ftidai"
+        label="替代量"
+        width="140">
+      </el-table-column>
+      <el-table-column
         prop="fbillno"
         label="在途订单号"
         width="130">

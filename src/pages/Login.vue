@@ -18,7 +18,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import {setCookie} from '../util/utils'
-import {send} from '../util/send'
 import CryptoJS from 'crypto-js'
 export default {
   name: 'Login',
@@ -101,17 +100,6 @@ export default {
       }).catch((error) => {
         this.toggleLoadingBt(false)
         console.log(error)
-      })
-    },
-    sureLogin2 () {
-      send({
-        name: 'userLogin?account2=' + this.Form.accountName + '&password=' + this.Form.accountPsd,
-        method: 'POST',
-        data: {
-        }
-      }).then(res => {
-      }).catch((res) => {
-        console.log(res)
       })
     }
   }

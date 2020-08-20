@@ -32,6 +32,11 @@
               width="50">
             </el-table-column>
             <el-table-column
+              property="FHeadSelfJ01100_text"
+              label="是否锁库"
+              width="100">
+            </el-table-column>
+            <el-table-column
               property="fname"
               label="生产车间"
               show-overflow-tooltip>
@@ -71,7 +76,7 @@
               label="是否缺料"
               width="80">
             </el-table-column>
-            <el-table-column label="操作" width="280" fixed="right">
+            <el-table-column label="操作" width="350" fixed="right">
               <template slot-scope="scope">
                 <!-- v-if="scope.row.fshort === 0" -->
                 <el-button
@@ -88,6 +93,11 @@
                   size="mini"
                   :type="scope.row.yjnum === 0 ? '' : 'danger'"
                   @click="warnDetail(scope.$index, scope.row)">预警</el-button>
+                <el-button
+                  size="mini"
+                  :type="scope.row.fshort === 0 ? 'danger' : ''"
+                  :disabled="scope.row.fok == '' || scope.row.FHeadSelfJ01100 == '1'"
+                  @click="lock(scope.$index, scope.row)">锁库</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -211,6 +221,7 @@ export default {
               item.FPlanFinishDateTxt = secondToFormat(item.FPlanFinishDate.time)
               // item.fcolorTxt = item.fcolor === 0 ? '否' : '是' // 颜色  1 标记颜色
               item.fshortTxt = item.fshort === 0 ? '否' : '是' // 1  缺料
+              item.FHeadSelfJ01100_text = item.FHeadSelfJ01100 === '0' ? '否' : '是'
               return item
             })
             this.listLoading = false
@@ -232,7 +243,7 @@ export default {
       this.finterid = row.finterid
     },
     notice (idx, row) {
-      if (this.userName !== '陆莉莉' && this.userName !== '储开琴' && this.userName !== '张东琴' && this.userName !== '王璐') {
+      if (this.userName !== '张东琴' && this.userName !== '陆莉莉' && this.userName !== 'administrator' && this.userName !== 'Administrator') {
         this.$message({
           message: '您没有权限进行该操作!',
           type: 'warning'
@@ -261,6 +272,39 @@ export default {
             default:
               this.$message({
                 message: '下达失败!',
+                type: 'error'
+              })
+              this.loadingW = false
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      }).catch(() => {
+      })
+    },
+    lock (idx, row) {
+      this.$confirm('确认锁库?', '提示', {
+        showClose: false,
+        closeOnClickModal: false,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loadingW = true
+        this.Http.post('updatesk?finterid=' + row.finterid
+        ).then(res => {
+          switch (res.data.code) {
+            case 1:
+              this.$message({
+                message: '锁库成功!',
+                type: 'success'
+              })
+              this.loadingW = false
+              this.getWorkOrderList()
+              break
+            default:
+              this.$message({
+                message: '锁库失败!',
                 type: 'error'
               })
               this.loadingW = false
